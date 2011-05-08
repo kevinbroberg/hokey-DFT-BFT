@@ -9,7 +9,7 @@ public class dftseq {
     }
 	
     public void traverse( Pair source, int color ) {
-		traverse( source, color, new Range(0,t.getSize()), new Range(0,t.getSize()));
+		traverse( source, color, new Range(0,graph.getSize()), new Range(0,graph.getSize()));
 		/*
         LinkedList< Pair > stack = new LinkedList<Pair>();
         stack.add( source );

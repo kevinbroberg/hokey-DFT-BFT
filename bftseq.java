@@ -10,7 +10,7 @@ public class bftseq {
 	}
 	
 	public void traverse( Pair source, int color ) {
-		traverse(source, color, new Range(0,t.getSize()), new Range(0,t.getSize()));
+		traverse(source, color, new Range(0,graph.getSize()), new Range(0,graph.getSize()));
 	/*
 		LinkedList< Pair > queue = new LinkedList<Pair>();
 		queue.addLast( source );
