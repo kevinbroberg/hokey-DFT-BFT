@@ -30,6 +30,9 @@ public class ClusterSolver {
     static Range[] ranges_cols, ranges_rows;
     static int mylb_rows, myub_rows, mylb_cols, myub_cols;
     static String filename= "ClusterOuput";
+	
+	
+	
     public static void main( String[] args ) throws Exception {
        
         // setup world variables
@@ -79,12 +82,15 @@ public class ClusterSolver {
 
         ranges_cols = new Range( 0, matrixSize-1).subranges(root);
         
-        mylb_rows = ranges_rows[rank/root].lb();
-        myub_rows = ranges_rows[rank/root].ub();
-
-        
-        mylb_cols = ranges_cols[rank%root].lb();
-        myub_cols = ranges_cols[rank%root].ub();
+		Range rows_range = ranges_rows[rank/root];
+		Range cols_range = ranges_cols[rank%root];
+		
+        mylb_rows = rows_range.lb();
+        myub_rows = rows_range.ub();
+		
+        mylb_cols = cols_range.lb();
+        myub_cols = cols_range.ub();
+		
 
         MazeMatrixInt tp =  new MazeMatrixInt(matrix, filename);
         
@@ -93,18 +99,35 @@ public class ClusterSolver {
         //Counter
         int counter=0;
         
-        for(int i=mylb_rows; i<myub_rows; i++)
-            {
+       for(int i=mylb_rows; i<myub_rows; i++)
+		{
                 for(int j=mylb_cols; j<myub_cols; j++)
-                    {
-                        if(matrix[i][j]==1)
-                            {
-                                int color = rank+size*counter;
-                                poop.traverse(new Pair(i,j), color);
-                            }
-                    }
-            }
+                {
+					if(i==mylb_rows || i==myub_rows )
+					{
+						if(matrix[i][j]==1)
+						{
+							int color = rank+size*counter;
+							poop.traverse(new Pair(i,j), color, rows_range, cols_range);
+							
+						}
+					}
+					else if(j==mylb_cols || j==myub_cols)
+					{
+						if(matrix[i][j]==1)
+						{
+							int color = rank+size*counter;
+							poop.traverse(new Pair(i,j), color, rows_range, cols_range);
+						}		
+					}
+				}
+        }
 
+		world.gather(0, IntegerBuf.buffer(matrix), patchBuffers(matrix, rows_range, cols_range))
+	 if(rank == 0)
+	 {
+		tp.printImage();
+	 }
         
         /*
         root_n = (int)Math.sqrt( n );
