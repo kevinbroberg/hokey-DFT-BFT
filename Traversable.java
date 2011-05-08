@@ -1,8 +1,13 @@
+import edu.rit.util.Range;
 public interface Traversable {
     /**
      * Return a list of legal nodes 
      */
     public java.util.ArrayList<Pair> getNeighbors( Pair whoever );
+	/**
+     * Return a list of legal nodes 
+     */
+    public java.util.ArrayList<Pair> getNeighbors( Pair whoever, Range rowrange, Range colrange );
     /**
      * Simple accessor function for the matrix
      */

@@ -2,7 +2,7 @@
  * It's a doppelganger of dftseq! Only it uses a queue
  */
 import java.util.*;
-
+import edu.rit.util.Range;
 public class bftseq {
 	private Traversable graph;
 	public bftseq( Traversable t ) {
@@ -12,7 +12,7 @@ public class bftseq {
 	public void traverse( Pair source, int color ) {
 		LinkedList< Pair > queue = new LinkedList<Pair>();
 		queue.addLast( source );
-		while( !queue.isEmpty() ){
+		while( !queue.isEmpty() ) {
 			Pair w = queue.removeFirst();
 			for( Pair neighbor : graph.getNeighbors(w)) {
                graph.process( w, neighbor, color );
