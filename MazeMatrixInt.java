@@ -217,6 +217,33 @@ public class MazeMatrixInt implements Traversable {
         return ret;
     } // neighbors
 
+	
+    // could return whatever kind of variable-length container
+    public ArrayList<Pair> getNeighbors( Pair coord, Range rowrange, Range colrange ) {
+        ArrayList<Pair> ret = new ArrayList<Pair>();
+        int x = coord.getX();
+        int y = coord.getY();
+        Pair[] cand = { new Pair(x-1,y),
+                        new Pair(x+1,y),
+                        new Pair(x,y-1),
+                        new Pair(x,y+1)};
+        for( Pair p : cand ) {
+		/*
+        int x = coord.getX(); int y = coord.getY();
+        return (x >= 0 && y >= 0 && x < this.width && y < this.height);
+		*/
+			int xval = p.getX();
+			int yval = p.getY();
+            if( xval > rowrange.lb() && xval <= rowrange.ub()
+				yval > colrange.lb() && xval <= colrange.ub()
+				&& this.isPath( p ) ) 
+			{
+                ret.add( p );
+            }
+        }
+        return ret;
+    } // neighbors
+	
     /**
      * Manages pretty colors using a TreeMap
      */

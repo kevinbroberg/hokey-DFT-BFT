@@ -6,7 +6,7 @@ public class dftseq {
     public dftseq( Traversable t ) {
         this.graph = t;
     }
-
+	
     public void traverse( Pair source, int color ) {
         LinkedList< Pair > stack = new LinkedList<Pair>();
         stack.add( source );
@@ -19,6 +19,19 @@ public class dftseq {
         }            
     }
 
+    public void traverse( Pair source, int color, Range rowrange, Range colrange ) {
+        LinkedList< Pair > stack = new LinkedList<Pair>();
+        stack.add( source );
+        while( !stack.isEmpty() ) {
+            Pair w = stack.removeLast();
+            for( Pair neighbor : graph.getNeighbors(w, rowrange, colrange) ) {
+                graph.process( w, neighbor, color );
+                stack.addLast(neighbor);
+            }
+        }            
+    }
+
+	
     public static void main( String[] args ) throws Exception {
         if (args.length < 1 ) args = new String[] {"chicken"};
         int matsize = 100;
