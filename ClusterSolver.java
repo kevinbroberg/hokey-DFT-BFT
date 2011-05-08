@@ -94,7 +94,7 @@ public class ClusterSolver {
 
         MazeMatrixInt tp =  new MazeMatrixInt(matrix, filename);
         
-        dftseq poop = new dftseq (tp);
+        dftseq cool = new dftseq (tp);
 
         //Counter
         int counter=0;
@@ -108,7 +108,7 @@ public class ClusterSolver {
 						if(matrix[i][j]==1)
 						{
 							int color = rank+size*counter;
-							poop.traverse(new Pair(i,j), color, rows_range, cols_range);
+							cool.traverse(new Pair(i,j), color, rows_range, cols_range);
 							
 						}
 					}
@@ -117,13 +117,15 @@ public class ClusterSolver {
 						if(matrix[i][j]==1)
 						{
 							int color = rank+size*counter;
-							poop.traverse(new Pair(i,j), color, rows_range, cols_range);
+							cool.traverse(new Pair(i,j), color, rows_range, cols_range);
 						}		
 					}
 				}
         }
-
+		
+		//gather the information from all the processors
        world.gather(0, IntegerBuf.buffer(matrix), IntegerBuf.patchBuffers(matrix, ranges_rows, ranges_cols));
+	   
 	 if(rank == 0)
 	 {
 		tp.printImage();
