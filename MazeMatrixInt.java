@@ -235,8 +235,8 @@ public class MazeMatrixInt implements Traversable {
 		*/
 			int xval = p.getX();
 			int yval = p.getY();
-			if( xval > rowrange.lb() && xval <= rowrange.ub() &&
-			    yval > colrange.lb() && xval <= colrange.ub() &&
+			if( xval >= rowrange.lb() && xval <= rowrange.ub() &&
+			    yval >= colrange.lb() && xval <= colrange.ub() &&
 			    this.isPath( p ) ) 
 			{
                 ret.add( p );

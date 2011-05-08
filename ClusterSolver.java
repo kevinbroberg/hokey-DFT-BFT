@@ -99,9 +99,9 @@ public class ClusterSolver {
         //Counter
         int counter=0;
         
-       for(int i=mylb_rows; i<myub_rows; i++)
+       for(int i=mylb_rows; i<=myub_rows; i++)
 		{
-                for(int j=mylb_cols; j<myub_cols; j++)
+                for(int j=mylb_cols; j<=myub_cols; j++)
                 {
 					if(i==mylb_rows || i==myub_rows )
 					{
