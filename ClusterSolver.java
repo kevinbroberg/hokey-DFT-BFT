@@ -123,7 +123,7 @@ public class ClusterSolver {
 				}
         }
 
-		world.gather(0, IntegerBuf.buffer(matrix), patchBuffers(matrix, rows_range, cols_range))
+       world.gather(0, IntegerBuf.buffer(matrix), IntegerBuf.patchBuffers(matrix, ranges_rows, ranges_cols));
 	 if(rank == 0)
 	 {
 		tp.printImage();

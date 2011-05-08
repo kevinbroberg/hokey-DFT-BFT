@@ -18,6 +18,7 @@ import edu.rit.pj.Comm;
 import edu.rit.pj.BarrierAction;
 import edu.rit.pj.IntegerForLoop;
 import edu.rit.pj.ParallelRegion;
+import edu.rit.pj.ParallelSection;
 import edu.rit.pj.ParallelTeam;
 
 import edu.rit.pj.reduction.SharedInteger;
@@ -44,18 +45,28 @@ public class dftsmp {
     private dftsmp() {}
     
     public static void traverse( int color ) {
-        while( !commonStack.isEmpty() ) {
-            Pair w = commonStack.removeLast();
+	while (true) {
+	    Pair w;
+	    region().critical( new ParallelSection() {
+		    public void run() {
+			if ( !commonStack.isEmpty() ) {
+			    w = commonStack.removeLast();
+			}
+			else {
+			    return;
+			}
+		    }
+		});
 	    System.out.println(w);
-            for( Pair neighbor : graph.getNeighbors(w) ) {
+	    for( Pair neighbor : graph.getNeighbors(w) ) {
 		int mdata = graph.get(neighbor);
 		if (mdata == MazeMatrixInt.WALL ||
 		    mdata == MazeMatrixInt.MAZE_PATH) { // i.e., unvisited
 		    graph.process( w, neighbor, color );				
 		    commonStack.addLast(neighbor);
 		}
-            }
-        }       
+	    }        
+	}       
     }
 
     public static void main( String[] args ) throws Exception {
