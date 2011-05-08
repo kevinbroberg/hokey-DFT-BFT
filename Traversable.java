@@ -16,4 +16,8 @@ public interface Traversable {
      * Process the edge between start and end, based on value
      */
     public void process( Pair start, Pair end, int value );
+	/**
+	 * Returns the length of a side of the maze
+	 */
+	public int getSize();
 }

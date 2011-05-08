@@ -144,6 +144,9 @@ public class MazeGenerator implements Traversable
         return friends;
     }
 
+	public int getSize() {
+		return matrixSize;
+	}
     /**
      * Simple accessor function for the matrix
      */
