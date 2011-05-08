@@ -97,11 +97,10 @@ public class ClusterSolver {
             {
                 for(int j=mylb_cols; j<myub_cols; j++)
                     {
-                        if(matrix[i][j]<2 && matrix[i][j]>=0)
+                        if(matrix[i][j]==1)
                             {
                                 int color = rank+size*counter;
                                 poop.traverse(new Pair(i,j), color);
-                                
                             }
                     }
             }
