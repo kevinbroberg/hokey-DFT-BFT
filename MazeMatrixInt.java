@@ -164,7 +164,14 @@ public class MazeMatrixInt implements Traversable {
     }
 
     /**
-     * Mimics put() on a range of values
+     * For silly interface reasons, we need this method in any traversable object,
+	 * as it is a more general version of put( Pair, int ). On MazeMatrixInts,
+	 * it process( start, end, value ) is exactly the same as put(end,value) -
+	 * in other words, the first arg is utterly ignored
+	 *
+	 * @arg start  ignored
+	 * @arg end    the point in the matrix to color
+	 * @arg value  the number to color the spot (subject to coloration by MMI)
      */
     public void process( Pair start, Pair end, int value ) {
         if( colorful ) { 
