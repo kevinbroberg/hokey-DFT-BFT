@@ -21,6 +21,18 @@ public class bftseq {
 		}
 	}
 	
+	public void traverse( Pair source, int color, Range rowrange, Range colrange ) {
+		LinkedList< Pair > queue = new LinkedList<Pair>();
+		queue.addLast( source );
+		while( !queue.isEmpty() ){
+			Pair w = queue.removeFirst();
+			for( Pair neighbor : graph.getNeighbors(w, rowrange, colrange)) {
+               graph.process( w, neighbor, color );
+			   queue.addLast(neighbor);
+			}
+		}
+	}
+	
 	public void rainbowTraverse( Pair source, int color ) {
 		LinkedList< Pair > queue = new LinkedList<Pair>();
 		queue.addLast( source );
