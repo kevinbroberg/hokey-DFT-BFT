@@ -18,6 +18,7 @@ import edu.rit.pj.Comm;
 import edu.rit.pj.BarrierAction;
 import edu.rit.pj.IntegerForLoop;
 import edu.rit.pj.ParallelRegion;
+import edu.rit.pj.ParallelSection;
 import edu.rit.pj.ParallelTeam;
 
 import edu.rit.pj.reduction.SharedInteger;
@@ -30,6 +31,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;
 
+
+class Busy {
+    private boolean b;
+
+    public Busy() {
+	b = true;
+    }
+
+    public Busy(boolean b_new) {
+	b = b_new;
+    }
+
+    public void set(boolean b_new) {this.b = b_new;}
+    public boolean get() {return this.b;}
+};
 
 public class dftsmp {
     public static final int TRAVERSED = 2;
@@ -44,17 +60,25 @@ public class dftsmp {
     private dftsmp() {}
     
     public static void traverse( int color ) {
-        while( !commonStack.isEmpty() ) {
-            Pair w = commonStack.removeLast();
-            for( Pair neighbor : graph.getNeighbors(w) ) {
+	while (true) {
+	    Pair w;
+	    if ( !commonStack.isEmpty() ) {
+		w = commonStack.removeLast();
+	    }
+	    else {
+		return;
+	    }
+	    
+	    System.out.println(w);
+	    for( Pair neighbor : graph.getNeighbors(w) ) {
 		int mdata = graph.get(neighbor);
 		if (mdata == MazeMatrixInt.WALL ||
 		    mdata == MazeMatrixInt.MAZE_PATH) { // i.e., unvisited
 		    graph.process( w, neighbor, color );				
 		    commonStack.addLast(neighbor);
 		}
-            }
-        }       
+	    }        
+	}       
     }
 
     public static void main( String[] args ) throws Exception {
@@ -85,19 +109,45 @@ public class dftsmp {
 	// Begin traversing.
 	commonStack = new LinkedList<Pair>();
 	commonStack.addLast( new Pair(0,0) );
+
+	working = new SharedInteger();
 	
 	// Parallelize the DFT.
 	new ParallelTeam().execute (new ParallelRegion()
 	    {
 		public void run() throws Exception
-		{
-		    
+		{		    
 		    int w = 0;
 		    do {
 			// Jump in and help!
 			working.incrementAndGet();
 			
-			dftsmp.traverse( dftsmp.TRAVERSED );
+			//dftsmp.traverse( dftsmp.TRAVERSED );
+			final Busy busy = new Busy(true);
+			while (busy.get()) {
+			    final Pair p = new Pair(0, 0);
+			    region().critical( new ParallelSection() {
+				    public void run() {
+					if ( !commonStack.isEmpty() ) {
+					    Pair q = commonStack.removeLast();
+					    p.setX(q.getX());
+					    p.setY(q.getY());
+					}
+					else {
+					    busy.set(false);
+					}
+				    }
+				});
+			    System.out.println(w);
+			    for( Pair neighbor : graph.getNeighbors(p) ) {
+				int mdata = graph.get(neighbor);
+				if (mdata == MazeMatrixInt.WALL ||
+				    mdata == MazeMatrixInt.MAZE_PATH) { // i.e., unvisited
+				    graph.process( p, neighbor, dftsmp.TRAVERSED );	
+				    commonStack.addLast(neighbor);
+				}
+			    }        
+			}
 			
 			// Didn't see any more work.
 			w = working.decrementAndGet();		

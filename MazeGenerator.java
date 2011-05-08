@@ -10,6 +10,7 @@ import javax.imageio.ImageWriter;
 import java.io.*;
 import edu.rit.color.HSB;
 import edu.rit.image.PJGColorImage;
+import edu.rit.util.Range;
 import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
@@ -147,6 +148,46 @@ public class MazeGenerator implements Traversable
 	public int getSize() {
 		return matrixSize;
 	}
+
+	
+    // could return whatever kind of variable-length container
+    public ArrayList<Pair> getNeighbors( Pair coord, Range rowrange, Range colrange ) {
+
+        
+        ArrayList <Pair> friends  = new ArrayList <Pair> ();
+        int x = coord.getX();
+        int y = coord.getY();
+        int random = gen.nextInt(17);
+        
+        Pair something [] = { new Pair(x+2,y), new Pair(x-2, y), new Pair(x, y+2), new Pair(x,y-2)};
+        
+
+        for(int i=0; i<something.length;  i++)
+            {
+                if( ( (something[i].getX() >= colrange.lb()) && (something[i].getY() >= rowrange.lb()) ) &&  ( (something[i].getX() <= colrange.ub() ) && (something[i].getY() <= rowrange.ub() ) ) )
+                    {
+                        if(matrix[something[i].getX()][something[i].getY()] == 0)
+                            {
+                                friends.add(something[i]);
+                            }
+                    }                    
+            }
+        
+        for(int k = 0; k < random; k++)
+            {
+                for(int i= 0; i<friends.size()-1; i++)
+                    {
+             
+                        int j = gen.nextInt(friends.size()-i);
+                        swap(friends, i, i+j);
+                    }
+            }
+
+
+        return friends;
+    } // neighbors
+	
+
     /**
      * Simple accessor function for the matrix
      */
