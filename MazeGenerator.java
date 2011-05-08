@@ -144,6 +144,13 @@ public class MazeGenerator implements Traversable
         return friends;
     }
 
+    /**
+     * Simple accessor function for the matrix
+     */
+    public int get( Pair whoever ) {
+	return matrix[whoever.getY()][whoever.getX()];
+    }
+
     public int getPosition(int r, int c)
     {
         return matrix[r][c];
