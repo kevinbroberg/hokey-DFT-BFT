@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import edu.rit.util.Range;
 public class dftseq {
 
     private Traversable graph;

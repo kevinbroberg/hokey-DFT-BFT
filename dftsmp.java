@@ -46,6 +46,7 @@ public class dftsmp {
     public static void traverse( int color ) {
         while( !commonStack.isEmpty() ) {
             Pair w = commonStack.removeLast();
+	    System.out.println(w);
             for( Pair neighbor : graph.getNeighbors(w) ) {
 		int mdata = graph.get(neighbor);
 		if (mdata == MazeMatrixInt.WALL ||
@@ -85,13 +86,14 @@ public class dftsmp {
 	// Begin traversing.
 	commonStack = new LinkedList<Pair>();
 	commonStack.addLast( new Pair(0,0) );
+
+	working = new SharedInteger();
 	
 	// Parallelize the DFT.
 	new ParallelTeam().execute (new ParallelRegion()
 	    {
 		public void run() throws Exception
-		{
-		    
+		{		    
 		    int w = 0;
 		    do {
 			// Jump in and help!

@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import edu.rit.color.HSB;
 import edu.rit.image.PJGColorImage;
+import edu.rit.util.Range;
 import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
@@ -234,9 +235,9 @@ public class MazeMatrixInt implements Traversable {
 		*/
 			int xval = p.getX();
 			int yval = p.getY();
-            if( xval > rowrange.lb() && xval <= rowrange.ub()
-				yval > colrange.lb() && xval <= colrange.ub()
-				&& this.isPath( p ) ) 
+			if( xval > rowrange.lb() && xval <= rowrange.ub() &&
+			    yval > colrange.lb() && xval <= colrange.ub() &&
+			    this.isPath( p ) ) 
 			{
                 ret.add( p );
             }
